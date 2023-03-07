@@ -1,0 +1,16 @@
+diff --git a/node_modules/pdfkit-table/index.js b/node_modules/pdfkit-table/index.js
+index 6344638..355c546 100755
+--- a/node_modules/pdfkit-table/index.js
++++ b/node_modules/pdfkit-table/index.js
+@@ -2,9 +2,9 @@
+ // "use strict";
+ // https://jshint.com/
+ 
+-const PDFDocument = require("pdfkit");
++const PDFDocument = require("pdfkit").default
++console.log('default byku');
+ // const EventEmitter = require('events').EventEmitter;
+-
+ class PDFDocumentWithTables extends PDFDocument {
+   
+   constructor(option) {

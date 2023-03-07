@@ -28,7 +28,8 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "patch-package"
   },
   "eslintConfig": {
     "extends": [
@@ -50,6 +51,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.0.0",
-    "@types/pdfkit": "^0.12.8"
+    "@types/pdfkit": "^0.12.8",
+    "patch-package": "^6.5.1"
   }
 }
