@@ -3,6 +3,7 @@ const webpack = require("webpack");
 module.exports = {
   webpack: {
     configure: {
+      cache: false,
       module: {
         rules: [
           // bundle and load afm files verbatim
@@ -44,7 +45,8 @@ module.exports = {
       resolve: {
         alias: {
           // maps fs to a virtual one allowing to register file content dynamically
-          fs: "pdfkit/js/virtual-fs.js",
+          // pdfkit-table has its own version of the pdfkit
+          fs: "pdfkit-table/node_modules/pdfkit/js/virtual-fs.js",
           // iconv-lite is used to load cid less fonts (not spec compliant)
           "iconv-lite": false,
         },
