@@ -1,4 +1,6 @@
 const webpack = require("webpack");
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = {
   webpack: {
@@ -64,6 +66,7 @@ module.exports = {
     },
     plugins: {
       add: [
+        new BundleAnalyzerPlugin(),
         new webpack.ProvidePlugin({
           Buffer: ["buffer", "Buffer"],
           process: "process/browser",

@@ -52,6 +52,7 @@
   "devDependencies": {
     "@craco/craco": "^7.0.0",
     "@types/pdfkit": "^0.12.8",
-    "patch-package": "^6.5.1"
+    "patch-package": "^6.5.1",
+    "webpack-bundle-analyzer": "^4.8.0"
   }
 }
