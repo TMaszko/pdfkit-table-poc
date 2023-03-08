@@ -13,7 +13,6 @@
     "assert": "^2.0.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
-    "pdfkit": "^0.13.0",
     "pdfkit-table": "^0.1.99",
     "process": "^0.11.10",
     "react": "^18.2.0",
@@ -29,6 +28,7 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
+    "example:node": "node --loader ts-node/esm ./src/pdf-demo.ts",
     "postinstall": "patch-package"
   },
   "eslintConfig": {
@@ -52,7 +52,9 @@
   "devDependencies": {
     "@craco/craco": "^7.0.0",
     "@types/pdfkit": "^0.12.8",
+    "nodemon": "^2.0.21",
     "patch-package": "^6.5.1",
+    "ts-node": "^10.9.1",
     "webpack-bundle-analyzer": "^4.8.0"
   }
 }

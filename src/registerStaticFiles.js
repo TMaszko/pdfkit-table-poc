@@ -1,8 +1,8 @@
 // the fs here is not node fs but the provided virtual one
 import fs from "fs";
 // the content file is returned as is (webpack is configured to load *.afm files as asset/source)
-import Courier from "pdfkit/js/data/Courier.afm";
-import CourierBold from "pdfkit/js/data/Courier-Bold.afm";
+import Courier from "pdfkit-table/node_modules/pdfkit/js/data/Courier.afm";
+import CourierBold from "pdfkit-table/node_modules/pdfkit/js/data/Courier-Bold.afm";
 
 function registerBinaryFiles(ctx) {
   ctx.keys().forEach((key) => {
@@ -26,7 +26,13 @@ registerBinaryFiles(require.context("./static-assets", true));
 
 // register AFM fonts distributed with pdfkit
 // is good practice to register only required fonts to avoid the bundle size increase too much
-registerAFMFonts(require.context("pdfkit/js/data", false, /Helvetica.*\.afm$/));
+registerAFMFonts(
+  require.context(
+    "pdfkit-table/node_modules/pdfkit/js/data",
+    false,
+    /Helvetica.*\.afm$/
+  )
+);
 
 // register files imported directly
 fs.writeFileSync("data/Courier.afm", Courier);
