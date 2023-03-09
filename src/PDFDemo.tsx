@@ -1,7 +1,7 @@
 import { Buffer } from "buffer";
 import PDFTableDocument from "pdfkit-table";
 import { useLayoutEffect, useRef } from "react";
-import testImageURL from "./lazy-assets/test.jpeg";
+import testImageUrl from "./lazy-assets/test.jpeg";
 import { createSimplePdf, createTablePdf } from "./createPdfs";
 
 const fetchFile = (fileURL: string) => {
@@ -27,11 +27,15 @@ export const waitForData = async (doc: PDFTableDocument): Promise<string> => {
 
 const createSimplePdfWeb = async (iframe: HTMLIFrameElement) => {
   const doc = await createSimplePdf(
-    testImageURL,
+    testImageUrl,
     fetchFile,
     (_doc) => _doc.registerFont("Roboto", "fonts/Roboto-Regular.ttf"),
     (_doc) => _doc.image("images/bee.png"),
-    (_doc) => _doc.image("images/test.jpg")
+    (_doc) =>
+      _doc.image("images/test.jpeg", _doc.page.width - 160, 90, {
+        width: 96,
+        height: 36,
+      })
   );
   waitForData(doc)
     .then((dataUrl) => {
@@ -45,7 +49,17 @@ const createSimplePdfWeb = async (iframe: HTMLIFrameElement) => {
 };
 
 const createTablePdfWeb = async (iframe: HTMLIFrameElement) => {
-  const doc = await createTablePdf();
+  const doc = await createTablePdf(
+    testImageUrl,
+    fetchFile,
+    (_doc) => _doc.registerFont("Roboto", "fonts/Roboto-Regular.ttf"),
+    (_doc) => _doc.image("images/bee.png"),
+    (_doc) =>
+      _doc.image("images/test.jpeg", _doc.page.width - 160, 90, {
+        width: 96,
+        height: 36,
+      })
+  );
   waitForData(doc)
     .then((dataUrl) => {
       // display the document in the iframe to the right

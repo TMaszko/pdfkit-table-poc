@@ -40,13 +40,27 @@ const main = async () => {
     fetchFile,
     registerFonts,
     (_doc) => _doc.image("node-static-assets/images/bee.png"),
-    (_doc) => _doc.image("src/lazy-assets/test.jpeg")
+    (_doc) =>
+      _doc.image("images/test.jpeg", _doc.page.width - 160, 90, {
+        width: 96,
+        height: 36,
+      })
   );
 
   doc.pipe(fs.createWriteStream("simple.pdf"));
   doc.end();
 
-  const tableDoc = await createTablePdf();
+  const tableDoc = await createTablePdf(
+    testImageUrl,
+    fetchFile,
+    registerFonts,
+    (_doc) => _doc.image("node-static-assets/images/bee.png"),
+    (_doc) =>
+      _doc.image("images/test.jpeg", _doc.page.width - 160, 90, {
+        width: 96,
+        height: 36,
+      })
+  );
   tableDoc.pipe(fs.createWriteStream("table.pdf"));
   tableDoc.end();
 };

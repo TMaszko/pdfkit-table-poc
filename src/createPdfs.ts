@@ -26,7 +26,7 @@ export const createSimplePdf = async (
 ) => {
   await fetchFile(testImageUrl)
     .then((testImageData) => {
-      return fs.writeFileSync("images/test.jpg", testImageData);
+      return fs.writeFileSync("images/test.jpeg", testImageData);
     })
     .catch((error) => {
       console.error(error);
@@ -81,20 +81,100 @@ export const createSimplePdf = async (
   return doc;
 };
 
-export const createTablePdf = async () => {
-  const doc = new PDFTableDocument();
+export const createTablePdf = async (
+  testImageUrl: string,
+  fetchFile: (url: string) => Promise<Buffer>,
+  registerFonts: (doc: PDFTableDocument) => void,
+  registerImage: (doc: PDFTableDocument) => void,
+  registerLazyImage: (doc: PDFTableDocument) => void
+) => {
+  await fetchFile(testImageUrl)
+    .then((testImageData) => {
+      return fs.writeFileSync("images/test.jpeg", testImageData);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  const doc = new PDFTableDocument({ size: "A4" });
+
+  registerFonts(doc);
+
+  const pageWidth = doc.page.width - 80;
+
+  doc
+    .rect(40, 40, pageWidth, 126)
+    .fill("#EDECE5")
+    .fontSize(24)
+    .fill("black")
+    .text("Title", 64, 76);
+
+  doc
+    .fontSize(14)
+    .fillColor("#0B0C0C")
+    .text("https://reallylonglinktosomething.com/123456789", 64, 114, {
+      link: "https://google.com",
+      underline: true,
+    });
+  try {
+    registerLazyImage(doc);
+  } catch (error) {
+    doc.moveDown().text(`\${error}`);
+    doc.text("Image not loaded. Try again later.");
+  }
+
+  doc.moveDown(3);
+  const firstColumnWidth = pageWidth * 0.4;
   const table = {
-    title: "Title",
-    subtitle: "Subtitle",
-    headers: ["Country", "Conversion rate", "Trend"],
-    rows: [
-      ["Switzerland", "12%", "+1.12%"],
-      ["France", "67%", "-0.98%"],
-      ["England", "33%", "+4.44%"],
+    headers: [
+      { width: firstColumnWidth, property: "name" },
+      {
+        width: pageWidth - firstColumnWidth,
+        property: "description",
+      },
+    ],
+    datas: [
+      {
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis ante in laoreet egestas. ",
+        name: "Name 1",
+      },
+      {
+        name: "bold:Name 2",
+        description: "bold:Lorem ipsum dolor.",
+
+        options: { fontSize: 10 },
+      },
+      {
+        name: "Name 3",
+        description: "Lorem ipsum dolor.",
+      },
     ],
   };
+
+  //@ts-ignore
   await doc.table(table, {
-    columnsSize: [200, 100, 100],
+    hideHeader: true,
+    x: 40,
+    prepareHeader: () => doc.font("Helvetica-Bold").fontSize(8),
+    prepareRow: (row, indexColumn, indexRow, rectRow) => {
+      doc.font("Helvetica").fontSize(8);
+    },
   });
+  doc.moveDown(2);
+
+  doc.fontSize(19).fill("black").text("Next Title");
+
+  doc.moveDown(1);
+
+  //@ts-ignore
+  await doc.table(table, {
+    hideHeader: true,
+    x: 40,
+    prepareHeader: () => doc.font("Helvetica-Bold").fontSize(8),
+    prepareRow: (row, indexColumn, indexRow, rectRow) => {
+      doc.font("Helvetica").fontSize(8);
+    },
+  });
+
   return doc;
 };
